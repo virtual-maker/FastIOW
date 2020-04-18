@@ -37,7 +37,7 @@ namespace ADC_AnalogRead
         return;
       }
 
-      foreach (IOWarrior iow in FastIOW.GetIOWarriors().Where(entry => entry is ADCDevice))
+      foreach (IOWarrior iow in FastIOW.GetIOWarriors().Where(entry => entry is ADCDevice && (entry as ADCDevice).ADC != null))
       {
         // Enable all ADC channels.
         (iow as ADCDevice).ADC.Enable(ADCConfig.Channel_0To7);
@@ -53,7 +53,7 @@ namespace ADC_AnalogRead
     {
       PollingTimer?.Stop();
 
-      foreach (IOWarrior iow in FastIOW.GetIOWarriors().Where(entry => entry is ADCDevice))
+      foreach (IOWarrior iow in FastIOW.GetIOWarriors().Where(entry => entry is ADCDevice && (entry as ADCDevice).ADC != null))
       {
         // Disable all ADC channels.
         (iow as ADCDevice).ADC.Disable();
@@ -66,7 +66,7 @@ namespace ADC_AnalogRead
     {
       adcListView.Items.Clear();
 
-      foreach (IOWarrior iow in FastIOW.GetIOWarriors().Where(entry => entry is ADCDevice))
+      foreach (IOWarrior iow in FastIOW.GetIOWarriors().Where(entry => entry is ADCDevice && (entry as ADCDevice).ADC != null))
       {
         ADCInterface adc = (iow as ADCDevice).ADC;
 
