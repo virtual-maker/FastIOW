@@ -267,5 +267,18 @@ namespace Tederean.FastIOW.Internal
         }
       }
     }
+
+    /// <summary>
+    /// Try to write a report to the pipe and returns if write was successful.
+    /// </summary>
+    /// <param name="report">The report to write.</param>
+    /// <param name="pipe">The pipe to write the report.</param>
+    /// <returns>Returns true if report write was successful.</returns>
+    public bool TryWriteReport(byte[] report, Pipe pipe)
+    {
+      CheckClosed();
+      CheckPipe(pipe);
+      return report.Length == NativeLib.IowKitWrite(IOWHandle, pipe.Id, report, (uint)report.Length);
+    }
   }
 }

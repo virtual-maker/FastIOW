@@ -1,17 +1,17 @@
 ﻿/*
- *   
+ *
  *   Copyright 2020 Florian Porsch <tederean@gmail.com>
- *   
+ *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Lesser General Public License as published by
  *   the Free Software Foundation; either version 3 of the License, or
  *   (at your option) any later version.
- *   
+ *
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU Lesser General Public License for more details.
- *   
+ *
  *   You should have received a copy of the GNU Lesser General Public License
  *   along with this program; if not, write to the Free Software
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
@@ -71,30 +71,50 @@ namespace Tederean.FastIOW.Internal
     {
       this.IOWarrior = IOWarrior;
       this.PWMPins = PWMPins;
-
-      // PWM setup: Output frequency ~ 732 Hz at 16bit resolution.
-      PWMWriteReport = IOWarrior.NewReport(Pipe.SPECIAL_MODE);
-      PWMWriteReport[0] = ReportId.PWM_SETUP;
-
-      // Set Per1 to 65535
-      PWMWriteReport[2] = 0xFF;
-      PWMWriteReport[3] = 0xFF;
-
-      // PWM1 Master Clock 48 MHz
-      PWMWriteReport[6] = 0x03;
-
-      // Set Per2 to 65535
-      PWMWriteReport[7] = 0xFF;
-      PWMWriteReport[8] = 0xFF;
-
-      // PWM2 Master Clock 48 MHz
-      PWMWriteReport[11] = 0x03;
+      PWMWriteReport = setupReport(IOWarrior);
 
       // Set to a secure state.
       Enabled = true;
       Disable();
     }
 
+    /// <summary>
+    /// Check if PWM interface is supported from device,
+    /// e.g. IO-Warrior56 Dongle (USB to I2C and SPI) don't support this interface.
+    /// </summary>
+    /// <param name="IOWarrior">The device to test for interface support</param>
+    /// <returns></returns>
+    public static bool IsInterfaceSupported(IOWarriorBase IOWarrior)
+    {
+      var report = setupReport(IOWarrior);
+      lock (IOWarrior.SyncObject)
+      {
+        return IOWarrior.TryWriteReport(report, Pipe.SPECIAL_MODE);
+      }
+    }
+
+    private static byte[] setupReport(IOWarriorBase IOWarrior)
+    {
+      // PWM setup: Output frequency ~ 732 Hz at 16bit resolution.
+      var report = IOWarrior.NewReport(Pipe.SPECIAL_MODE);
+      report[0] = ReportId.PWM_SETUP;
+
+      // Set Per1 to 65535
+      report[2] = 0xFF;
+      report[3] = 0xFF;
+
+      // PWM1 Master Clock 48 MHz
+      report[6] = 0x03;
+
+      // Set Per2 to 65535
+      report[7] = 0xFF;
+      report[8] = 0xFF;
+
+      // PWM2 Master Clock 48 MHz
+      report[11] = 0x03;
+
+      return report;
+    }
 
     public void Enable(PWMConfig config)
     {

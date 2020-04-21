@@ -1,17 +1,17 @@
 ﻿/*
- *   
+ *
  *   Copyright 2020 Florian Porsch <tederean@gmail.com>
- *   
+ *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Lesser General Public License as published by
  *   the Free Software Foundation; either version 3 of the License, or
  *   (at your option) any later version.
- *   
+ *
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU Lesser General Public License for more details.
- *   
+ *
  *   You should have received a copy of the GNU Lesser General Public License
  *   along with this program; if not, write to the Free Software
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
@@ -36,7 +36,7 @@ namespace Tederean.FastIOW.Internal
 
     private int[]  m_AnalogPins;
     public int[] AnalogPins
-    { 
+    {
       get => m_AnalogPins?.ToArray() ?? default;
       private set => m_AnalogPins = value;
     }
@@ -55,6 +55,24 @@ namespace Tederean.FastIOW.Internal
       Disable();
     }
 
+    /// <summary>
+    /// Check if ADC interface is supported from device,
+    /// e.g. IO-Warrior56 Dongle (USB to I2C and SPI) don't support this interface.
+    /// </summary>
+    /// <param name="IOWarrior">The device to test for interface support</param>
+    /// <returns></returns>
+    public static bool IsInterfaceSupported(IOWarriorBase IOWarrior, Pipe pipe)
+    {
+      lock (IOWarrior.SyncObject)
+      {
+        var report = IOWarrior.NewReport(pipe);
+
+        report[0] = ReportId.ADC_SETUP;
+        report[1] = 0x00; // ADC Disable
+
+        return IOWarrior.TryWriteReport(report, pipe);
+      }
+    }
 
     public void Enable(ADCConfig config)
     {

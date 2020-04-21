@@ -154,9 +154,15 @@ namespace Tederean.FastIOW
     internal IOWarrior56(IntPtr handle) : base(handle)
     {
       I2C = new I2CInterfaceImplementation(this, Pipe.SPECIAL_MODE, 62);
-      ADC = new ADCInterfaceImplementation(this, Pipe.SPECIAL_MODE, AnalogPins);
-      PWM = new PWMInterfaceImplementation(this, PWMPins);
       SPI = new SPIInterfaceImplementation(this, 61);
+      if (ADCInterfaceImplementation.IsInterfaceSupported(this, Pipe.SPECIAL_MODE))
+      {
+        ADC = new ADCInterfaceImplementation(this, Pipe.SPECIAL_MODE, AnalogPins);
+      }
+      if (PWMInterfaceImplementation.IsInterfaceSupported(this))
+      {
+        PWM = new PWMInterfaceImplementation(this, PWMPins);
+      }
     }
 
 
