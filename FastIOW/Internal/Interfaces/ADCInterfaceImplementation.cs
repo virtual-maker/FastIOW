@@ -60,9 +60,10 @@ namespace Tederean.FastIOW.Internal
     /// e.g. IO-Warrior56 Dongle (USB to I2C and SPI) don't support this interface.
     /// </summary>
     /// <param name="IOWarrior">The device to test for interface support</param>
-    /// <returns></returns>
-    public static bool IsInterfaceSupported(IOWarriorBase IOWarrior, Pipe pipe)
+    /// <returns>True if ADC interface is available</returns>
+    public static bool IsInterfaceSupported(IOWarriorBase IOWarrior)
     {
+      Pipe pipe = Pipe.SPECIAL_MODE;
       lock (IOWarrior.SyncObject)
       {
         var report = IOWarrior.NewReport(pipe);

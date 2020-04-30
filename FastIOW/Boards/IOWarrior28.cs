@@ -35,6 +35,8 @@ namespace Tederean.FastIOW
 
     protected override int SpecialReportSize => 64;
 
+    public override bool HasADC => ADC != null;
+
     protected override Pipe[] SupportedPipes => new[] { Pipe.IO_PINS, Pipe.SPECIAL_MODE, Pipe.I2C_MODE, Pipe.ADC_MODE };
 
     private int[] AnalogPins => new[] { ADC_0, ADC_1, ADC_2, ADC_3 };

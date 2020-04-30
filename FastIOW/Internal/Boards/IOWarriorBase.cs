@@ -43,6 +43,9 @@ namespace Tederean.FastIOW.Internal
 
     public bool HIGH => true;
 
+    public virtual bool HasADC => false;
+
+    public virtual bool HasPWM => false;
 
     public event EventHandler<PinStateChangeEventArgs> PinStateChange;
 

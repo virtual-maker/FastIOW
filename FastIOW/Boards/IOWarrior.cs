@@ -1,17 +1,17 @@
 ﻿/*
- *   
+ *
  *   Copyright 2020 Florian Porsch <tederean@gmail.com>
- *   
+ *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU Lesser General Public License as published by
  *   the Free Software Foundation; either version 3 of the License, or
  *   (at your option) any later version.
- *   
+ *
  *   This program is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU Lesser General Public License for more details.
- *   
+ *
  *   You should have received a copy of the GNU Lesser General Public License
  *   along with this program; if not, write to the Free Software
  *   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
@@ -65,6 +65,18 @@ namespace Tederean.FastIOW
     /// </summary>
     bool HIGH { get; }
 
+    /// <summary>
+    /// Tests whether the ADC interface is available and supported by the device,
+    /// e.g. IO-Warrior56 dongle (USB to I2C and SPI) do not support this interface.
+    ///
+    /// </summary>
+    bool HasADC { get; }
+
+    /// <summary>
+    /// Tests whether the PWM interface is available and supported by the device,
+    /// e.g. IO-Warrior56 dongle (USB to I2C and SPI) do not support this interface.
+    /// </summary>
+    bool HasPWM { get; }
 
     /// <summary>
     /// Event that gets triggered when a pin changes its state.

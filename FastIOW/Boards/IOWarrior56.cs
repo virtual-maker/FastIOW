@@ -37,6 +37,10 @@ namespace Tederean.FastIOW
 
     protected override Pipe[] SupportedPipes => new[] { Pipe.IO_PINS, Pipe.SPECIAL_MODE };
 
+    public override bool HasADC => ADC != null;
+
+    public override bool HasPWM => PWM != null;
+
     private int[] AnalogPins => new[] { ADC_0, ADC_1, ADC_2, ADC_3, ADC_4, ADC_5, ADC_6, ADC_7 };
 
     private int[] PWMPins => new[] { PWM_1, PWM_2 };
@@ -155,7 +159,7 @@ namespace Tederean.FastIOW
     {
       I2C = new I2CInterfaceImplementation(this, Pipe.SPECIAL_MODE, 62);
       SPI = new SPIInterfaceImplementation(this, 61);
-      if (ADCInterfaceImplementation.IsInterfaceSupported(this, Pipe.SPECIAL_MODE))
+      if (ADCInterfaceImplementation.IsInterfaceSupported(this))
       {
         ADC = new ADCInterfaceImplementation(this, Pipe.SPECIAL_MODE, AnalogPins);
       }

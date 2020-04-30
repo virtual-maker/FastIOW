@@ -18,7 +18,7 @@ namespace PWM_Slider
       FormClosing += OnFormClosingEvent;
 
       FastIOW.OpenConnection();
-      iow = (IOWarrior56)FastIOW.GetIOWarriors().Where(entry => entry is IOWarrior56).FirstOrDefault();
+      iow = (IOWarrior56)FastIOW.GetIOWarriors().Where(entry => entry is IOWarrior56 && entry.HasPWM).FirstOrDefault();
 
       if (iow == null)
       {
